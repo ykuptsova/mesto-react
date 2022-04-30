@@ -1,14 +1,13 @@
 import trash from '../images/trash.svg'
 
-function Card(props) {
-  const card = props.card
-
+function Card({ card, onCardClick }) {
   const heardClass = `element__heart ${
     card.liked ? 'element__heart_active' : ''
   }`
   const trashClass = `element__trash ${
     card.owned ? 'element__trash_active' : ''
   }`
+  const handleCardClick = () => onCardClick(card)
 
   return (
     <article className="element">
@@ -16,7 +15,7 @@ function Card(props) {
         className="element__image"
         src={card.link}
         alt={card.alt}
-        onClick={() => props.onCardClick(card)}
+        onClick={handleCardClick}
       />
       <div className="element__description">
         <h2 className="element__title">{card.name}</h2>

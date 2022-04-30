@@ -9,7 +9,7 @@ function ImagePopup(props) {
       <figure className="popup__image-container">
         <img className="popup__image" alt="Place" src={card ? card.link : ''} />
         <figcaption className="popup__image-description">
-          {card ? card.name : ''}
+          {card && card.name}
         </figcaption>
         <button
           className="popup__close-button"

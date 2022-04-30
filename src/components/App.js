@@ -4,7 +4,6 @@ import Main from './Main'
 import Footer from './Footer'
 import PopupWithForm from './PopupWithForm'
 import ImagePopup from './ImagePopup'
-import trash from '../images/trash.svg'
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
@@ -127,20 +126,6 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={handleImagePopupClose} />
-
-      <template className="element__template">
-        <article className="element">
-          <img className="element__image" src="{{src}}" alt="{{alt}}" />
-          <div className="element__description">
-            <h2 className="element__title">{/* name */}</h2>
-            <div className="element__likes">
-              <button className="element__heart" type="button"></button>
-              <div className="element__like_counter">&nbsp;</div>
-            </div>
-          </div>
-          <img className="element__trash" alt="Delete" src={trash} />
-        </article>
-      </template>
     </div>
   )
 }
