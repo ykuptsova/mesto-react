@@ -15,7 +15,7 @@ class Api {
       method: 'PATCH',
       body: JSON.stringify({
         name: data.name,
-        about: data.info,
+        about: data.description,
       }),
     }
     return fetch(this._url('users/me'), this._init(config))
@@ -111,7 +111,7 @@ class Api {
     return {
       _id: userInfo._id,
       name: userInfo.name,
-      info: userInfo.about,
+      description: userInfo.about,
       avatar: userInfo.avatar,
     }
   }
