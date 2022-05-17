@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
@@ -12,23 +12,14 @@ import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function App() {
   // component states
-  const [currentUser, setCurrentUser] = React.useState({
-    _id: null,
-    name: '',
-    description: '',
-    avatar: null,
-  })
-  const [cards, setCards] = React.useState([])
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
-    false,
-  )
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false)
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false)
-  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = React.useState(
-    false,
-  )
-  const [selectedCard, setSelectedCard] = React.useState(null)
-  const [deletingCard, setDeletingCard] = React.useState(null)
+  const [currentUser, setCurrentUser] = useState({})
+  const [cards, setCards] = useState([])
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false)
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false)
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false)
+  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false)
+  const [selectedCard, setSelectedCard] = useState(null)
+  const [deletingCard, setDeletingCard] = useState(null)
 
   // handling popups
   const closeAllPopups = () => {
@@ -71,9 +62,15 @@ function App() {
     ;(card.liked
       ? api.unlikeCard(card._id, currentUser._id)
       : api.likeCard(card._id, currentUser._id)
-    ).then((newCard) => {
-      setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)))
-    })
+    )
+      .then((newCard) => {
+        setCards((cards) =>
+          cards.map((c) => (c._id === card._id ? newCard : c)),
+        )
+      })
+      .catch((error) => {
+        console.log('Could not like / unlike card:', error)
+      })
   }
   function handleCardDelete(card) {
     setDeletingCard(card)
@@ -81,9 +78,14 @@ function App() {
   }
   function handleConfirmDeleteCard() {
     closeAllPopups()
-    api.deleteCard(deletingCard._id).then(() => {
-      setCards((cards) => cards.filter((c) => c._id !== deletingCard._id))
-    })
+    api
+      .deleteCard(deletingCard._id)
+      .then(() => {
+        setCards((cards) => cards.filter((c) => c._id !== deletingCard._id))
+      })
+      .catch((error) => {
+        console.log('Could not delete card:', error)
+      })
   }
   function handleAddPlace(card) {
     closeAllPopups()
@@ -98,7 +100,7 @@ function App() {
   }
 
   // fetch currentUser on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getUserInfo()
       .then((data) => {
@@ -115,7 +117,7 @@ function App() {
   }, [])
 
   // fetch cards on current user update
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getInitialCards(currentUser._id)
       .then((cards) => {

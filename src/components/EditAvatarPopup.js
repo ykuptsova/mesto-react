@@ -11,6 +11,10 @@ function EditAvatarPopup(props) {
     })
   }
 
+  React.useEffect(() => {
+    inputRef.current.value = ''
+  }, [props.isOpen])
+
   return (
     <PopupWithForm
       name="pic"
